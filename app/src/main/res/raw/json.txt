@@ -1,0 +1,22 @@
+[
+{
+"type":"textfield",
+"label":"Sample question 1",
+"required":"true",
+"input_type":"text"},
+{
+"type":"textfield",
+"label":"Sample question 2",
+"required":"false",
+"input_type":"number_decimal"},
+{
+"type":"textfield",
+"label":"Sample question 3",
+"required":"true",
+"input_type":"number"},
+{
+"type":"textfield",
+"label":"Sample question 4",
+"required":"false",
+"input_type":"email"}
+]
