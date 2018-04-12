@@ -7,7 +7,7 @@
 {
 "type":"textfield",
 "label":"Sample question 2",
-"required":"false",
+"required":"true",
 "input_type":"number_decimal"},
 {
 "type":"textfield",
@@ -17,6 +17,6 @@
 {
 "type":"textfield",
 "label":"Sample question 4",
-"required":"false",
+"required":"true",
 "input_type":"email"}
 ]

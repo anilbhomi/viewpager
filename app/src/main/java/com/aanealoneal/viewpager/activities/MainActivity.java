@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.aanealoneal.viewpager.R;
+import com.aanealoneal.viewpager.custom.CustomViewPager;
 import com.aanealoneal.viewpager.fragments.EdittextFragment;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -50,14 +51,38 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
         getSampleJson();
 
-        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        final SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            float sumPositionAndpositionOffSet;
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                if(position +positionOffset>sumPositionAndpositionOffSet){
+                    //swipe from right to left
+                    Fragment fragment = mSectionsPagerAdapter.getItem(position);
+                    if (fragment instanceof EdittextFragment) {
+                        EdittextFragment frag = (EdittextFragment) fragment;
+                        frag.etdEdittext.setError("error");
+                        frag.etdEdittext.requestFocus();
+                    }
+                }
+                sumPositionAndpositionOffSet = position+positionOffset;
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     /**
@@ -70,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
             inputStream.read(b);
             question = (JsonArray) new JsonParser().parse(new String(b));
         } catch (IOException e) {
-            Log.i(TAG,"I/0 Exception: "+e.getLocalizedMessage());
+            Log.i(TAG, "I/0 Exception: " + e.getLocalizedMessage());
         }
     }
 
@@ -117,11 +142,11 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             JsonObject objQuestion = (JsonObject) question.get(position);
-            switch (objQuestion.get("type").getAsString()){
-                case "textfield":{
+            switch (objQuestion.get("type").getAsString()) {
+                case "textfield": {
                     EdittextFragment edittextFragment = new EdittextFragment();
                     Bundle args = new Bundle();
-                    args.putString(ARG_INDIVIDUAL_QUESTION,objQuestion.toString());
+                    args.putString(ARG_INDIVIDUAL_QUESTION, objQuestion.toString());
                     edittextFragment.setArguments(args);
                     return edittextFragment;
                 }

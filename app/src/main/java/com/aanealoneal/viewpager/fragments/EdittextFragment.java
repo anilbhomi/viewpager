@@ -25,8 +25,8 @@ public class EdittextFragment extends Fragment {
     private static final String ARG_INDIVIDUAL_QUESTION = "individual_question";
     private static JsonObject individualQuestion;
 
-
-    private EditText etdEdittext;
+    private View view;
+    public EditText etdEdittext;
     private TextView tvLabel;
 
 
@@ -39,7 +39,7 @@ public class EdittextFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =inflater.inflate(R.layout.fragment_edittext, container, false);
+        view =inflater.inflate(R.layout.fragment_edittext, container, false);
         individualQuestion = (JsonObject) new JsonParser().parse(getArguments().getString(ARG_INDIVIDUAL_QUESTION));
 
         etdEdittext = view.findViewById(R.id.et_edittext);
@@ -69,5 +69,9 @@ public class EdittextFragment extends Fragment {
                 break;
             }
         }
+    }
+
+    public boolean checkRequired(){
+        return !(individualQuestion.get("required").getAsBoolean() && TextUtils.isEmpty(etdEdittext.getText().toString()));
     }
 }
